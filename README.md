@@ -1,7 +1,7 @@
 # NicaMarket API (proyecto base)
 
 API REST de **productos** y **categorías** para la Práctica guiada n.º 9 (Servicios Web, UAM).
-Es el punto de partida **sin seguridad** y **sin base de datos**: los datos viven en memoria
+Ahora protegida con **Spring Security + JWT** (HS256). Sin base de datos: los datos viven en memoria
 y se reinician al detener la aplicación.
 
 - Java 21 · Spring Boot 4.1.1 (Spring Framework 7, Jakarta EE 11) · Maven
@@ -63,3 +63,24 @@ com/example/factura/
 ├── model/         Producto, Categoria
 └── exception/     RecursoNoEncontradoException, ApiExceptionHandler
 ```
+
+## Seguridad (rama `seguridad-jwt`)
+
+1. Generar una clave: `openssl rand -base64 32`
+2. Exportarla antes de iniciar (no se guarda en el repo):
+
+```bash
+export JWT_SECRET_BASE64=<clave>
+mvn spring-boot:run
+```
+
+3. `POST /api/auth/login` con `{"username":"admin","password":"Admin123!"}` devuelve el token; enviarlo como `Authorization: Bearer <token>`.
+
+Usuarios de laboratorio: `admin` (ADMIN) y `operador` (USER). Solo para desarrollo.
+
+| Ruta | Anónimo | USER | ADMIN |
+|------|---------|------|-------|
+| `/api/publico/**`, `POST /api/auth/login` | 200 | 200 | 200 |
+| `GET /api/productos`, `GET /api/categorias` (y `/{id}`) | 401 | 200 | 200 |
+| `POST/PUT/DELETE` productos y categorías | 401 | 403 | permitido |
+| `GET /api/auth/perfil` | 401 | usuario y roles | usuario y roles |
