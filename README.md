@@ -84,3 +84,7 @@ Usuarios de laboratorio: `admin` (ADMIN) y `operador` (USER). Solo para desarrol
 | `GET /api/productos`, `GET /api/categorias` (y `/{id}`) | 401 | 200 | 200 |
 | `POST/PUT/DELETE` productos y categorías | 401 | 403 | permitido |
 | `GET /api/auth/perfil` | 401 | usuario y roles | usuario y roles |
+
+## Evidencias
+
+Colección de Postman en `postman/` y capturas con su explicación en `evidencias/`.
